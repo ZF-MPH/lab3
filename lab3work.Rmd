@@ -1,0 +1,47 @@
+---
+title: "laboratory3"
+author: "Zach F"
+date: "1/31/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(here)
+library(rio)
+library(tidyverse)
+library(gghighlight)
+library(colorBlindness)
+library(ggrepel)
+library(scales)
+library(ggthemes)
+```
+
+```{r}
+honey <- import(here("data", "honeyproduct1.csv"))
+```
+
+Visualize the total production of honey across years by state Use color to highlight the west coast (Washington, Oregon, and California) with a different color used for each west coast state.
+```{r}
+plot1 <- ggplot(honey, aes(year, totalprod)) +
+    geom_point(color = "gray70") +
+  geom_point(data = filter(honey, state == "OR" |
+                             state == "CA" |
+                             state == "WA"),
+             aes(color = state))
+plot1
+```
+
+Reproduce the plot according three different kinds of color blindness, as well as a desaturated version.
+```{r}
+cvdPlot(plot1)
+```
+
+Reproduce the plot using a color blind safe palette.
+```{r}
+plot2 <- plot1 +
+  theme_igray() + 
+  scale_colour_colorblind()
+plot2
+```
