@@ -22,26 +22,68 @@ library(ggthemes)
 honey <- import(here("data", "honeyproduct1.csv"))
 ```
 
+## Number 1
 Visualize the total production of honey across years by state Use color to highlight the west coast (Washington, Oregon, and California) with a different color used for each west coast state.
+
 ```{r}
-plot1 <- ggplot(honey, aes(year, totalprod)) +
-    geom_point(color = "gray70") +
-  geom_point(data = filter(honey, state == "OR" |
-                             state == "CA" |
-                             state == "WA"),
-             aes(color = state))
-plot1
+honey_region <- honey %>% 
+  mutate(region = ifelse(state %in% c("OR", "CA", "WA"), "West Coast", "Other"))
+
+plot <- ggplot(honey_region, aes(year, totalprod)) +
+  geom_point(color = "grey80") +
+  geom_point(data = filter(honey_region, region == "West Coast"),
+             aes(color = "West Coast")) +
+  scale_color_manual(values = "#C55644") +
+  theme(
+    legend.title = element_blank(),
+    legend.position = c(0.3, 0.9),
+    legend.box.background = element_rect(color = "black"),
+    legend.box.margin = margin(t = -.05, unit = "cm"),
+  ) +
+  labs(
+    title = "States Total Honey Production Over Time",
+    subtitle = "<span style = 'color: #C55644'>**West Coast**</span> compared to other states",
+    caption = "Non West Coast states are shown in grey:
+    West Coast states include California, Oregon and Washington",
+    y = "Total Honey Production"
+  ) +
+  theme(plot.subtitle = ggtext::element_markdown())
+plot
 ```
 
+
+## Number 2
 Reproduce the plot according three different kinds of color blindness, as well as a desaturated version.
 ```{r}
-cvdPlot(plot1)
+cvdPlot(plot)
 ```
 
+## Number 3
 Reproduce the plot using a color blind safe palette.
 ```{r}
-plot2 <- plot1 +
-  theme_igray() + 
+plot_plain <- ggplot(honey_region, aes(year, totalprod)) +
+  geom_point(color = "grey80") +
+  geom_point(data = filter(honey_region, region == "West Coast"),
+             aes(color = "West Coast")) +
+  scale_color_manual(values = "#C55644") +
+  theme(
+    legend.title = element_blank(),
+    legend.position = c(0.3, 0.9),
+    legend.box.background = element_rect(color = "black"),
+    legend.box.margin = margin(t = -.05, unit = "cm"),
+  ) +
+  labs(
+    title = "States Total Honey Production Over Time",
+    subtitle = "West Coast compared to other states",
+    caption = "Non West Coast states are shown in grey",
+    y = "Total Honey Production"
+  ) #needed to remove the html code so that it would still read the same
+plot_plain
+
+plot_clbnd <- plot_plain +
+  theme_igray() +
   scale_colour_colorblind()
-plot2
+plot_clbnd
 ```
+
+
