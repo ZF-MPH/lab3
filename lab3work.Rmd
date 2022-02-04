@@ -1,6 +1,6 @@
 ---
 title: "laboratory3"
-author: "Zach F"
+author: "Mandi, Esmeralda, Zach F"
 date: "1/31/2022"
 output: html_document
 ---
@@ -16,6 +16,7 @@ library(colorBlindness)
 library(ggrepel)
 library(scales)
 library(ggthemes)
+library(readr)
 ```
 
 ```{r}
@@ -23,7 +24,8 @@ honey <- import(here("data", "honeyproduct1.csv"))
 ```
 
 ## Number 1
-Visualize the total production of honey across years by state Use color to highlight the west coast (Washington, Oregon, and California) with a different color used for each west coast state.
+Visualize the **total production of honey** across **years** by **state**
+Use color to **highlight the west coast** (Washington, Oregon, and California) with a different color used for each west coast state.
 
 ```{r}
 honey_region <- honey %>% 
@@ -50,7 +52,6 @@ plot <- ggplot(honey_region, aes(year, totalprod)) +
   theme(plot.subtitle = ggtext::element_markdown())
 plot
 ```
-
 
 ## Number 2
 Reproduce the plot according three different kinds of color blindness, as well as a desaturated version.
@@ -81,9 +82,23 @@ plot_plain <- ggplot(honey_region, aes(year, totalprod)) +
 plot_plain
 
 plot_clbnd <- plot_plain +
-  theme_igray() +
+  theme_igray()
   scale_colour_colorblind()
 plot_clbnd
 ```
 
+## Number 4
+Download file with **region/division** of each state
+```{r}
+urlfile = "https://raw.githubusercontent.com/cphalpert/census-regions/master/us%20census%20bureau%20regions%20and%20divisions.csv"
 
+reg2 <- read_csv(url(urlfile))
+
+# Join reg2 with honey file
+df <- merge(honey, reg2, by.x = "state", by.y = "State Code", all = TRUE)
+
+# Produce a bar plot displaying average honey for each state (collapse years)
+
+
+
+```
