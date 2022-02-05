@@ -114,8 +114,28 @@ df %>%
        subtitle = "Among the U.S. States and District of Columbia",
        caption = "U.S. honey production occurs primarily
        in Midwest and Western regions") +
-  theme(plot.titlt = element_text(hjust = 0, size = 18, face = "bold")) +
+  theme(plot.title = element_text(hjust = 0, size = 18, face = "bold")) +
   theme(axis.title = element_text(size = 14, face = "bold", colour = "black")) +
   theme(panel.background = element_blank())
-
 ```
+
+## Number 5
+Create **heatmap** displaying **average honey production** across **years by region** (averaging across states within region)
+```{r}
+df %>% 
+  group_by(Region, year) %>% 
+  summarise(mean = mean(totalprod, na.rm = TRUE)) %>% 
+  ggplot(aes(year, Region)) +
+  geom_tile(aes(fill = mean),
+            color = "white") +
+  scale_y_discrete(limits = c("Northeast", "South", "West", "Midwest")) +
+  scale_fill_viridis_c(trans = "reverse", option = "plasma") +
+  coord_fixed() +
+  labs(x = "Year",
+       y = "Region",
+       title = "Average Yearly Honey Production",
+       subtitle = "by U.S. Region",
+       fill = "Production") +
+  theme_clean()
+```
+
