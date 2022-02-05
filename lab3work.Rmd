@@ -106,7 +106,7 @@ df %>%
   ggplot(aes(state, mean)) +
   geom_col(aes(fill = Region)) +
   scale_fill_brewer(palette = "Paired") +
-  scale_x_discrete(expand = c(0,0)) +
+  scale_x_discrete(expand = c(0, 0)) +
   coord_flip() +
   labs(x = "U.S. States and District of Columbia",
        y = "Average Honey Production",
@@ -114,7 +114,8 @@ df %>%
        subtitle = "Among the U.S. States and District of Columbia",
        caption = "U.S. honey production occurs primarily
        in Midwest and Western regions") +
-  theme(plot.title = element_text(hjust = 0, size = 18, face = "bold")) +
+  theme(plot.titlt = element_text(hjust = 0, size = 18, face = "bold")) +
   theme(axis.title = element_text(size = 14, face = "bold", colour = "black")) +
   theme(panel.background = element_blank())
+
 ```
