@@ -17,6 +17,8 @@ library(ggrepel)
 library(scales)
 library(ggthemes)
 library(readr)
+library(albersusa)
+library(colorspace)
 ```
 
 ```{r}
@@ -82,7 +84,7 @@ plot_plain <- ggplot(honey_region, aes(year, totalprod)) +
 plot_plain
 
 plot_clbnd <- plot_plain +
-  theme_igray()
+  theme_igray() +
   scale_colour_colorblind()
 plot_clbnd
 ```
@@ -138,4 +140,49 @@ df %>%
        fill = "Production") +
   theme_clean()
 ```
+
+
+## 6 Create a plot of choice **joining** us and honey datasets *first*
+```{r}
+us <- usa_sf()
+ggplot(us) +
+  geom_sf()
+
+#select few variables from honey dataset 
+
+honey_sub <- honey %>% 
+  select("iso_3166_2" = "state", year, totalprod, prodvalue)
+
+#Joined us with honey subset
+
+us_honey <- left_join(us, honey_sub)
+us_honey 
+
+
+
+```
+
+
+
+## Plot of joined us and honey datasets 
+```{r}
+ggplot(us_honey) +
+  geom_sf(aes(fill = totalprod/1e6)) +
+  facet_wrap(~year) +
+  scale_fill_continuous_sequential(
+    palette = "Dark Mint",
+    na.value = "white",
+    name = "Honey production"
+  ) +
+  labs(title = "Honey production from 1998-2012", 
+       subtitle = "Across 44 US states") +
+  theme_minimal()
+
+
+
+```
+
+
+
+
 
